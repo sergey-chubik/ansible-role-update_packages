@@ -1,0 +1,3 @@
+---
+# defaults file for update_packages
+update_packages_name: '*'
