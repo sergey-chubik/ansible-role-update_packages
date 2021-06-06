@@ -1,15 +1,37 @@
 ---
 # tasks file for upgrade_packages
-- name: update_packages | Update all packages RedHat
-  yum:
-    name: "{{ update_packages_name }}"
-    state: latest
-    update_cache: yes
+- block:
+    - name: update_packages | Settings yum.conf for proxy
+      lineinfile:
+        path: /etc/yum.conf
+        line: "{{ item }}"
+      loop:
+        - "proxy={{ update_packages_yum_proxy }}"
+        - "https_proxy={{ update_packages_yum_proxy }}"
+        - "proxy_username={{ update_packages_yum_proxy_username }}"
+        - "proxy_password={{ update_packages_yum_proxy_password }}"
+      when: update_packages_set_proxy
+
+    - name: update_packages | Update all packages RedHat
+      yum:
+        name: "{{ update_packages_name }}"
+        state: latest
+        update_cache: yes
   when: ansible_os_family == "RedHat"
 
-- name: update_packages | Update all packages Debian
-  apt:
-    name: "{{ update_packages_name }}"
-    state: latest
-    update_cache: yes
+- block:
+    - name: update_packages | Settings apt.conf for proxy
+      lineinfile:
+        path: /etc/apt/apt.conf.d/90curtin-aptproxy
+        line: "{{ item }}"
+      loop:
+        - Acquire::http::Proxy "{{ update_packages_apt_proxy }}";
+        - Acquire::https::Proxy "{{ update_packages_apt_proxy }}";
+      when: update_packages_set_proxy
+
+    - name: update_packages | Update all packages Debian
+      apt:
+        name: "{{ update_packages_name }}"
+        state: latest
+        update_cache: yes
   when: ansible_os_family == "Debian"

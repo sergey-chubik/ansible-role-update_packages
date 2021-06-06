@@ -1,3 +1,13 @@
 ---
-# defaults file for update_packages
+# Updating all system packages or a specific package list
 update_packages_name: '*'
+# Setup access to repositories through proxy (true), no proxy (false)
+update_packages_set_proxy: true
+# For RedHat
+update_packages_yum_proxy_username: ovirt
+update_packages_yum_proxy_password: glavk96now
+update_packages_yum_proxy: "http://leninagate.ekaterinburg.fsin.uis:8080"
+# For Debian
+update_packages_apt_proxy_username: ovirt
+update_packages_apt_proxy_password: glavk96now
+update_packages_apt_proxy: "http://{{ update_packages_apt_proxy_username }}:{{ update_packages_apt_proxy_password }}@leninagate.ekaterinburg.fsin.uis:8080/"
