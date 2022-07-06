@@ -8,8 +8,8 @@
       loop:
         - "proxy={{ update_packages_yum_proxy }}"
         - "https_proxy={{ update_packages_yum_proxy }}"
-        - "proxy_username={{ update_packages_yum_proxy_username }}"
-        - "proxy_password={{ update_packages_yum_proxy_password }}"
+        - "proxy_username={{ update_packages_proxy_username }}"
+        - "proxy_password={{ update_packages_proxy_password }}"
       when: update_packages_set_proxy
 
     - name: update_packages | Update all packages RedHat
